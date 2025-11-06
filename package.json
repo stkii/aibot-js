@@ -10,9 +10,9 @@
     "lint": "biome lint --write ./src",
     "deploy:commands": "pnpm exec node --env-file=.env --import=tsx ./scripts/deployCommands.ts",
     "dev": "pnpm exec node --env-file=.env --import=tsx ./src/main.ts",
-    "db:gen": " pnpm exec drizzle-kit generate",
-    "db:migrate": " pnpm exec drizzle-kit migrate",
-    "db:push": " pnpm exec drizzle-kit push"
+    "db:gen": "pnpm exec drizzle-kit generate",
+    "db:migrate": "pnpm exec drizzle-kit migrate",
+    "db:push": "pnpm exec drizzle-kit push"
   },
   "license": "BSD-3-Clause",
   "private": true,
