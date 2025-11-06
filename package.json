@@ -1,0 +1,38 @@
+{
+  "name": "aibot-js",
+  "version": "1.0.0",
+  "description": "AI-powered Discord bot.",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "check": "biome check ./src",
+    "format": "biome format --write ./src",
+    "lint": "biome lint --write ./src",
+    "deploy:commands": "pnpm exec node --env-file=.env --import=tsx ./scripts/deployCommands.ts",
+    "dev": "pnpm exec node --env-file=.env --import=tsx ./src/main.ts",
+    "db:gen": " pnpm exec drizzle-kit generate",
+    "db:migrate": " pnpm exec drizzle-kit migrate",
+    "db:push": " pnpm exec drizzle-kit push"
+  },
+  "license": "BSD-3-Clause",
+  "private": true,
+  "packageManager": "pnpm@10.20.0",
+  "devDependencies": {
+    "@biomejs/biome": "2.3.2",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^24.9.2",
+    "drizzle-kit": "^0.31.6",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "3.0.0-beta.47",
+    "@libsql/client": "^0.15.15",
+    "ai": "6.0.0-beta.92",
+    "discord.js": "^14.24.2",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.7",
+    "js-yaml": "^4.1.0",
+    "zod": "^4.1.12"
+  }
+}
