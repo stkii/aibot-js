@@ -1,4 +1,4 @@
-import { type Client, type Collection, Events, type Interaction } from 'discord.js';
+import { type Client, type Collection, Events, type Interaction, MessageFlags } from 'discord.js';
 
 import type { SlashCommand } from './types';
 
@@ -17,7 +17,10 @@ export function registerInteractionHandlers(client: BotClientLike): void {
     if (!command) {
       try {
         if (!interaction.replied && !interaction.deferred) {
-          await interaction.reply({ content: `あれ？そのコマンドは登録されてないよ。`, ephemeral: true });
+          await interaction.reply({
+            content: `あれ？そのコマンドは登録されてないよ。`,
+            flags: MessageFlags.Ephemeral,
+          });
         }
       } catch (notifyErr) {
         console.error('[ERROR] Failed to notify unknown command:', notifyErr);
@@ -34,12 +37,12 @@ export function registerInteractionHandlers(client: BotClientLike): void {
         if (interaction.deferred || interaction.replied) {
           await interaction.followUp({
             content: `コマンド \`/${name}\` の実行に失敗しました。`,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
         } else {
           await interaction.reply({
             content: `コマンド \`/${name}\` の実行に失敗しました。`,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
         }
       } catch (notifyErr) {

@@ -1,6 +1,7 @@
 import { type ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 
 import { generateOpenAIText } from '../../infrastructure/api/generateText';
+import { createTokenUsageService } from '../../service/tokenUsageService';
 import type { SlashCommand } from '../types';
 
 const chatCommand: SlashCommand = {
@@ -14,8 +15,23 @@ const chatCommand: SlashCommand = {
   execute: async (interaction: ChatInputCommandInteraction) => {
     const message = interaction.options.getString('message');
     if (!message) throw new Error('Empty message');
-    const { text } = await generateOpenAIText('gpt-4o', message, 1024);
-    await interaction.reply(text);
+    const model = 'gpt-4o';
+    // Acknowledge the interaction quickly to avoid timeouts
+    await interaction.deferReply();
+
+    const { text, token } = await generateOpenAIText(model, message, 1024);
+
+    // Persist token usage
+    const tokenUsageService = createTokenUsageService();
+    await tokenUsageService.recordUsage({
+      userId: interaction.user.id,
+      interactionId: interaction.id,
+      command: interaction.commandName,
+      model,
+      usage: token,
+    });
+
+    await interaction.editReply(text);
   },
 };
 
