@@ -1,5 +1,6 @@
 # Database
 drizzle/
+*.db
 
 # Documents
 docs/
