@@ -1,6 +1,6 @@
 import type { InferSelectModel } from 'drizzle-orm';
 import { and, desc, eq, gte, sql } from 'drizzle-orm';
-import type { TokenUsageTotals } from '../../../model/value/TokenUsageTotals';
+import type { TokenUsageTotals } from '../../../model/vo/TokenUsageTotals';
 import { tokenUsageTable } from '../schema';
 import { BaseDao } from './baseDao';
 
@@ -82,7 +82,7 @@ class TokenUsageDao extends BaseDao {
    * Sum total tokens for a user since JST midnight (00:00 Asia/Tokyo) of the current day.
    * Uses SQLite datetime arithmetic to anchor the window in UTC.
    */
-  async sumTotalTokensSinceJstMidnight(userId: string): Promise<number> {
+  async sumTotalTokensToday(userId: string): Promise<number> {
     const rows = await this.db
       .select({
         sum: sql<number>`COALESCE(SUM(${tokenUsageTable.totalTokens}), 0)`,

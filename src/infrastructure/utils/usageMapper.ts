@@ -1,5 +1,5 @@
 import type { LanguageModelUsage } from 'ai';
-import { createTokenUsageTotals } from '../../model/value/TokenUsageTotals';
+import { createTokenUsageTotals } from '../../model/vo/TokenUsageTotals';
 
 /** Convert LanguageModelUsage (external SDK) to domain TokenUsageTotals. */
 export function toTokenUsageTotals(usage: LanguageModelUsage) {

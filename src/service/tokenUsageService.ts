@@ -23,7 +23,7 @@ export function createTokenUsageService(dao: TokenUsageDao = new TokenUsageDao()
 
     /** Daily used total tokens since JST midnight. */
     async sumDailyUsedTokensJst(userId: string): Promise<number> {
-      return dao.sumTotalTokensSinceJstMidnight(userId);
+      return dao.sumTotalTokensToday(userId);
     },
 
     /** Remaining tokens for today (JST window). */
@@ -32,7 +32,7 @@ export function createTokenUsageService(dao: TokenUsageDao = new TokenUsageDao()
         Number.isFinite(dailyLimit) && dailyLimit !== undefined
           ? Number(dailyLimit)
           : Number(process.env['TOKEN_DAILY_LIMIT'] ?? 10000);
-      const used = await dao.sumTotalTokensSinceJstMidnight(userId);
+      const used = await dao.sumTotalTokensToday(userId);
       return Math.max(0, limit - used);
     },
 
