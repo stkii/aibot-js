@@ -1,4 +1,5 @@
 import { type Client, type Collection, Events, type Interaction, MessageFlags } from 'discord.js';
+import { createTokenUsageService } from '../service/tokenUsageService';
 
 import type { SlashCommand } from './types';
 
@@ -29,6 +30,31 @@ export function registerInteractionHandlers(client: BotClientLike): void {
     }
 
     console.log(`[CMD] ${interaction.user.tag} -> /${name}`);
+
+    // Budget guard: apply only to budgeted commands
+    if ((command as SlashCommand).budgeted) {
+      try {
+        const tokenUsageService = createTokenUsageService();
+        const remaining = await tokenUsageService.getRemainingDailyTokensJst(interaction.user.id);
+        if (remaining <= 0) {
+          await interaction.reply({
+            content: `本日のトークン上限（${process.env['TOKEN_DAILY_LIMIT'] ?? 10000} tokens）に達しました。JST 0時にリセットされます。`,
+            flags: MessageFlags.Ephemeral,
+          });
+          return;
+        }
+      } catch (guardErr) {
+        console.error('[ERROR] Budget guard failed:', guardErr);
+        try {
+          await interaction.reply({
+            content: '現在このコマンドは利用できません。しばらくしてからお試しください。',
+            flags: MessageFlags.Ephemeral,
+          });
+        } catch {}
+        return;
+      }
+    }
+
     try {
       await command.execute(interaction);
     } catch (error) {

@@ -1,5 +1,5 @@
 import type { InferSelectModel } from 'drizzle-orm';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, gte, sql } from 'drizzle-orm';
 import type { TokenUsageTotals } from '../../../model/value/TokenUsageTotals';
 import { tokenUsageTable } from '../schema';
 import { BaseDao } from './baseDao';
@@ -76,6 +76,27 @@ class TokenUsageDao extends BaseDao {
       .where(and(eq(tokenUsageTable.userId, userId), eq(tokenUsageTable.discordMsgId, discordMsgId)))
       .limit(1);
     return rows[0] ?? null;
+  }
+
+  /**
+   * Sum total tokens for a user since JST midnight (00:00 Asia/Tokyo) of the current day.
+   * Uses SQLite datetime arithmetic to anchor the window in UTC.
+   */
+  async sumTotalTokensSinceJstMidnight(userId: string): Promise<number> {
+    const rows = await this.db
+      .select({
+        sum: sql<number>`COALESCE(SUM(${tokenUsageTable.totalTokens}), 0)`,
+      })
+      .from(tokenUsageTable)
+      .where(
+        and(
+          eq(tokenUsageTable.userId, userId),
+          // JST midnight in UTC: add +9h, start of day, then subtract 9h
+          gte(tokenUsageTable.timestamp, sql`datetime('now', '+9 hours', 'start of day', '-9 hours')`)
+        )
+      );
+
+    return rows[0]?.sum ?? 0;
   }
 }
 

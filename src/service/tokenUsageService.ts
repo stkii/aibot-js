@@ -21,6 +21,21 @@ export function createTokenUsageService(dao: TokenUsageDao = new TokenUsageDao()
       });
     },
 
+    /** Daily used total tokens since JST midnight. */
+    async sumDailyUsedTokensJst(userId: string): Promise<number> {
+      return dao.sumTotalTokensSinceJstMidnight(userId);
+    },
+
+    /** Remaining tokens for today (JST window). */
+    async getRemainingDailyTokensJst(userId: string, dailyLimit?: number): Promise<number> {
+      const limit =
+        Number.isFinite(dailyLimit) && dailyLimit !== undefined
+          ? Number(dailyLimit)
+          : Number(process.env['TOKEN_DAILY_LIMIT'] ?? 10000);
+      const used = await dao.sumTotalTokensSinceJstMidnight(userId);
+      return Math.max(0, limit - used);
+    },
+
     async getByInteractionId(interactionId: string): Promise<TokenUsageDetailDto | null> {
       const row = await dao.getByInteractionId(interactionId);
       return row ? rowToTokenUsageDetailDto(row) : null;

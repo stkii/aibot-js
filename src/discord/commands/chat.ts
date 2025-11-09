@@ -12,10 +12,11 @@ const chatCommand: SlashCommand = {
     .addStringOption((option) =>
       option.setName('message').setDescription('The message to chat with the bot').setRequired(true)
     ),
+  budgeted: true,
   execute: async (interaction: ChatInputCommandInteraction) => {
     const message = interaction.options.getString('message');
     if (!message) throw new Error('Empty message');
-    const model = 'gpt-4o';
+    const model = 'gpt-4o-mini';
     // Acknowledge the interaction quickly to avoid timeouts
     await interaction.deferReply();
 

@@ -7,11 +7,12 @@ const helpEmbed = new EmbedBuilder()
   .setTitle('ヘルプ')
   .setDescription('スラッシュコマンドの一覧です')
   .addFields(
-    { name: '**/command1**', value: 'Description', inline: true },
+    { name: '**/chat**', value: 'Single-turn chat with the bot', inline: true },
     { name: '**/command2**', value: 'Description', inline: true },
-    { name: '\u200B', value: '\u200B' }, // Blank line using a zero-width space
     { name: '**/command3**', value: 'Description', inline: true },
-    { name: '**/command4**', value: 'Description', inline: true }
+    { name: '\u200B', value: '\u200B' }, // Blank line using a zero-width space
+    { name: '**/help**', value: 'Show help for the bot', inline: true },
+    { name: '**/help**', value: 'Show help for the bot', inline: true }
   );
 
 const helpCommand: SlashCommand = {
