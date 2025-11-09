@@ -6,8 +6,8 @@ export type TokenUsageTotals = {
 
 /**
  * Create token totals with strict invariants:
- * - input/output は 0 以上の有限整数であること（違反時は例外）
- * - total は常に input + output から算出（外部提供値は無視）
+ * - input/output must be non-negative finite integers (exception if violated)
+ * - total must be calculated from input + output (ignore external provided value)
  */
 export function createTokenUsageTotals(params: {
   inputTokens?: number | null;
