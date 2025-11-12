@@ -5,14 +5,13 @@ import type { SlashCommand } from '../types';
 const helpEmbed = new EmbedBuilder()
   .setColor(0xe597b2)
   .setTitle('ヘルプ')
-  .setDescription('スラッシュコマンドの一覧です')
+  .setDescription('スラッシュコマンド一覧')
   .addFields(
-    { name: '**/chat**', value: 'Single-turn chat with the bot', inline: true },
-    { name: '**/command2**', value: 'Description', inline: true },
-    { name: '**/command3**', value: 'Description', inline: true },
+    { name: '**/chat**', value: 'シングルターンのチャットを行います', inline: true },
+    { name: '**/tex**', value: 'TeXで書いた数式をPNGで出力します', inline: true },
     { name: '\u200B', value: '\u200B' }, // Blank line using a zero-width space
-    { name: '**/help**', value: 'Show help for the bot', inline: true },
-    { name: '**/help**', value: 'Show help for the bot', inline: true }
+    { name: '**/help**', value: 'ヘルプを表示します', inline: true },
+    { name: '**/help**', value: 'ヘルプを表示します', inline: true }
   );
 
 const helpCommand: SlashCommand = {
