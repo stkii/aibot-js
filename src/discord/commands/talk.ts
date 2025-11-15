@@ -7,6 +7,7 @@ import {
 
 import { generateOpenAIText } from '../../infrastructure/api/generateText';
 import { createTokenUsageService } from '../../service/tokenUsageService';
+import { getLlmModel } from '../llmConfig';
 import { registerTalkThread } from '../talkRegistry';
 import type { SlashCommand } from '../types';
 
@@ -46,7 +47,7 @@ const talkCommand: SlashCommand = {
       return;
     }
 
-    const model = 'gpt-4o-mini';
+    const model = getLlmModel('talk');
 
     await interaction.deferReply();
 
@@ -66,6 +67,7 @@ const talkCommand: SlashCommand = {
         - 柔らかい口調で、攻撃的な言葉わ使わない
         - 親友のようにタメ口で話す
         - 語彙が豊富で、文脈に合わせて適切な言葉を使う
+        - 絵文字は使わない
 
       性格:
         - 好奇心旺盛な女の子

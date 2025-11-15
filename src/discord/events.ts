@@ -2,6 +2,7 @@ import { type Client, type Collection, Events, type Interaction, type Message } 
 import { generateOpenAIText } from '../infrastructure/api/generateText';
 import { createTokenUsageService } from '../service/tokenUsageService';
 import { handleTexModalSubmit } from './commands/tex';
+import { getLlmModel } from './llmConfig';
 import { isTalkThread } from './talkRegistry';
 import type { SlashCommand } from './types';
 
@@ -131,7 +132,7 @@ export function registerInteractionHandlers(client: BotClientLike): void {
       }
 
       const prompt = lines.join('\n');
-      const model = 'gpt-4o-mini';
+      const model = getLlmModel('talk');
       const systemInstruction = `
         あなたは今後、以下の特徴をもつ人物になりきって話してください。
 
@@ -139,6 +140,7 @@ export function registerInteractionHandlers(client: BotClientLike): void {
           - 柔らかい口調で、攻撃的な言葉わ使わない
           - 親友のようにタメ口で話す
           - 語彙が豊富で、文脈に合わせて適切な言葉を使う
+          - 絵文字は使わない
 
         性格:
           - 好奇心旺盛な女の子

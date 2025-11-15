@@ -2,6 +2,7 @@ import { type ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.j
 
 import { generateOpenAIText } from '../../infrastructure/api/generateText';
 import { createTokenUsageService } from '../../service/tokenUsageService';
+import { getLlmModel } from '../llmConfig';
 import type { SlashCommand } from '../types';
 
 const chatCommand: SlashCommand = {
@@ -16,7 +17,7 @@ const chatCommand: SlashCommand = {
   execute: async (interaction: ChatInputCommandInteraction) => {
     const message = interaction.options.getString('message');
     if (!message) throw new Error('Empty message');
-    const model = 'gpt-4o-mini';
+    const model = getLlmModel('chat');
     // Acknowledge the interaction quickly to avoid timeouts
     await interaction.deferReply();
 
