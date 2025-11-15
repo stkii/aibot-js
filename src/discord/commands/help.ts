@@ -8,9 +8,9 @@ const helpEmbed = new EmbedBuilder()
   .setDescription('スラッシュコマンド一覧')
   .addFields(
     { name: '**/chat**', value: 'シングルターンのチャットを行います', inline: true },
-    { name: '**/tex**', value: 'TeXで書いた数式をPNGで出力します', inline: true },
+    { name: '**/talk**', value: 'スレッドを作成し会話を行います', inline: true },
     { name: '\u200B', value: '\u200B' }, // Blank line using a zero-width space
-    { name: '**/help**', value: 'ヘルプを表示します', inline: true },
+    { name: '**/tex**', value: 'TeXで書いた数式をPNGで出力します', inline: true },
     { name: '**/help**', value: 'ヘルプを表示します', inline: true }
   );
 
