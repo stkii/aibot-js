@@ -7,4 +7,3 @@ export function registerTalkThread(threadId: string): void {
 export function isTalkThread(threadId: string): boolean {
   return talkThreadIds.has(threadId);
 }
-

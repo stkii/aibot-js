@@ -43,11 +43,7 @@ export function getClient(): Promise<BotClient> {
   // Initialize client on first call
   clientPromise = (async () => {
     const c = new BotClient({
-      intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
-      ],
+      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
     });
     client = c;
     return c;
