@@ -1,6 +1,6 @@
 // ESM script (project has "type": "module").
 // Run with:
-//   pnpm exec node --import=tsx ./src/tools/debugSvg.js "TeX ..."
+//   pnpm exec node --import=tsx ./src/tools/debugSvg.js
 
 import { Resvg } from '@resvg/resvg-js';
 import { FORMULA_TARGET_PX_HEIGHT, MATHJAX_SVG_SCALE, texToSvg } from '../modules/texToSvg.ts';
@@ -62,7 +62,7 @@ async function main() {
       ? inputs
       : [
           String.raw`X(\omega = x)`,
-          String.raw`L : \Theta \times \Theta \rightarrow \mathbb{R};\hspace{1em}  L(\theta,\,T(\bm{X})) = |\, T(\bm{X}) - \theta \,|^{2}`,
+          String.raw`L : \Theta \times \Theta \rightarrow \mathbb{R};\hspace{1em}  L(\theta,\,T(\boldsymbol{X})) = |\, T(\boldsymbol{X}) - \theta \,|^{2}`,
         ];
   for (const tex of samples) {
     try {
