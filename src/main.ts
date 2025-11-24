@@ -3,9 +3,13 @@ import { Events } from 'discord.js';
 import { getClient } from './discord/client';
 import { discoverCommands } from './discord/commands/index';
 import { registerInteractionHandlers } from './discord/events';
+import { getConfig } from './infrastructure/config';
 import { scheduleDailyTokenAggregation } from './service/tokenAggregation';
 
 async function main() {
+  // Get secret key
+  const config = await getConfig();
+
   // Create Bot Client
   const client = await getClient();
 
@@ -26,10 +30,8 @@ async function main() {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
   });
 
-  // Log in to Discord with your client's token
-  const token = process.env['DISCORD_BOT_TOKEN'];
-  if (!token) throw new Error('Environment variable "DISCORD_BOT_TOKEN" is not available');
-  await client.login(token);
+  // Log in to Discord with your client's token from config
+  await client.login(config.discordBotToken);
 
   console.log('Successfully logged in !');
 }
