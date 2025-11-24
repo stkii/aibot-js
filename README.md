@@ -2,7 +2,10 @@
 
 <a href="https://www.typescriptlang.org" target="_blank"><img src="https://img.shields.io/badge/TypeScript-3178C6.svg?logo=typescript&logoColor=white&style=flat" alt="TypeScript-Badge"></a>
 
-## クイックスタート（開発中）
+> [!WARNING]
+> This project is intended for local use and should not be exposed publicly.
+
+## Quick Start
 
 ```bash
 git clone https://github.com/stkii/aibot-js.git
