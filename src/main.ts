@@ -3,6 +3,7 @@ import { Events } from 'discord.js';
 import { getClient } from './discord/client';
 import { discoverCommands } from './discord/commands/index';
 import { registerInteractionHandlers } from './discord/events';
+import { scheduleDailyTokenAggregation } from './service/tokenAggregation';
 
 async function main() {
   // Create Bot Client
@@ -16,6 +17,9 @@ async function main() {
 
   // Register only command interaction handlers (Ready stays here)
   registerInteractionHandlers(client);
+
+  // Bootstrap daily token aggregation
+  scheduleDailyTokenAggregation();
 
   // When the client is ready, run this code only once
   client.once(Events.ClientReady, (readyClient) => {

@@ -1,3 +1,6 @@
+# Archive
+storage/
+
 # Database
 drizzle/
 *.db
