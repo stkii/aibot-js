@@ -8,6 +8,10 @@
     "check": "biome check ./src",
     "format": "biome format --write ./src",
     "lint": "biome lint --write ./src",
+    "start": "pnpm exec pm2 start ./src/main.ts --name aibot-js --interpreter node --node-args=\"--env-file=.env --import=tsx\"",
+    "restart": "pnpm exec pm2 restart aibot-js || pnpm run start:pm2",
+    "stop": "pnpm exec pm2 stop aibot-js || true",
+    "logs": "pnpm exec pm2 logs aibot-js",
     "deploy:commands": "pnpm exec node --env-file=.env --import=tsx ./scripts/deployCommands.ts",
     "dev": "pnpm exec node --env-file=.env --import=tsx ./src/main.ts",
     "db:gen": "pnpm exec drizzle-kit generate",
@@ -36,6 +40,7 @@
     "drizzle-orm": "^0.44.7",
     "js-yaml": "^4.1.0",
     "mathjax": "^4.0.0",
+    "pm2": "^6.0.14",
     "zod": "^4.1.12"
   }
 }
