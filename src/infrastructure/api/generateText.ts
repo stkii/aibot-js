@@ -1,6 +1,8 @@
-import { openai } from '@ai-sdk/openai';
+import { createOpenAI } from '@ai-sdk/openai';
 import type { LanguageModelUsage } from 'ai';
 import { generateText } from 'ai';
+
+import { getConfig } from '../config';
 
 /**
  * Generate text using OpenAI API
@@ -22,8 +24,11 @@ export async function generateOpenAIText(
   topP?: number,
   topK?: number
 ): Promise<{ text: string; token: LanguageModelUsage }> {
+  const config = await getConfig();
+  const openai = createOpenAI({ apiKey: config.openaiApiKey });
+
   const res = await generateText({
-    model: openai(model), // use OpenAI Responses API
+    model: openai(model), // use OpenAI Responses API with SecretManager key
     prompt: prompt,
     maxOutputTokens: maxTokens,
     ...(system !== undefined && { system }),
