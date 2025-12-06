@@ -1,8 +1,8 @@
 export type SlashCommandKey = 'chat' | 'talk';
 
 const DISCORD_MODELS: Record<SlashCommandKey, string> = {
-  chat: 'gpt-4o-mini',
-  talk: 'gpt-4o-mini',
+  chat: process.env['CHAT_LLM_MODEL'] as string,
+  talk: process.env['TALK_LLM_MODEL'] as string,
 };
 
 export function getLlmModel(key: SlashCommandKey): string {
