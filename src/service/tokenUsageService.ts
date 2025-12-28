@@ -1,3 +1,4 @@
+import { getConfig } from '../infrastructure/config';
 import TokenUsageDao from '../infrastructure/db/dao/tokenUsageDao';
 import {
   rowToTokenUsageDetailDto,
@@ -31,7 +32,7 @@ export function createTokenUsageService(dao: TokenUsageDao = new TokenUsageDao()
       const limit =
         Number.isFinite(dailyLimit) && dailyLimit !== undefined
           ? Number(dailyLimit)
-          : Number(process.env['TOKEN_DAILY_LIMIT'] ?? 10000);
+          : (await getConfig()).tokenDailyLimit;
       const used = await dao.sumTotalTokensToday(userId);
       return Math.max(0, limit - used);
     },

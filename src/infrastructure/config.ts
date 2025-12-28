@@ -3,6 +3,7 @@ import { SecretManagerServiceClient } from '@google-cloud/secret-manager';
 export interface SecretConfig {
   discordBotToken: string;
   openaiApiKey: string;
+  tokenDailyLimit: number;
 }
 
 const client = new SecretManagerServiceClient();
@@ -30,11 +31,22 @@ async function getSecretValueFor(defaultSecretId: string, options: { secretIdEnv
 
 let cachedConfig: SecretConfig | null = null;
 
+function resolveTokenDailyLimit(): number {
+  const raw = process.env['TOKEN_DAILY_LIMIT'];
+  if (!raw || raw.trim().length === 0) return 10000;
+  const parsed = Number.parseInt(raw, 10);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    throw new Error('Environment variable "TOKEN_DAILY_LIMIT" must be a non-negative integer.');
+  }
+  return parsed;
+}
+
 export async function getConfig(): Promise<SecretConfig> {
   if (cachedConfig) return cachedConfig;
 
   const discordEnv = process.env['DISCORD_BOT_TOKEN'];
   const openaiEnv = process.env['OPENAI_API_KEY'];
+  const tokenDailyLimit = resolveTokenDailyLimit();
 
   const [discordBotToken, openaiApiKey] = await Promise.all([
     discordEnv && discordEnv.length > 0
@@ -58,6 +70,6 @@ export async function getConfig(): Promise<SecretConfig> {
     throw new Error('Secret "OPENAI_API_KEY" is not configured.');
   }
 
-  cachedConfig = { discordBotToken, openaiApiKey };
+  cachedConfig = { discordBotToken, openaiApiKey, tokenDailyLimit };
   return cachedConfig;
 }

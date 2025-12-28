@@ -1,5 +1,6 @@
 import { type Client, type Collection, Events, type Interaction, type Message } from 'discord.js';
 import { generateOpenAIText } from '../infrastructure/api/generateText';
+import { getConfig } from '../infrastructure/config';
 import { createTokenUsageService } from '../service/tokenUsageService';
 import { handleTexModalSubmit } from './commands/tex';
 import { getLlmModel } from './llmConfig';
@@ -58,10 +59,14 @@ export function registerInteractionHandlers(client: BotClientLike): void {
       if ((command as SlashCommand).budgeted) {
         try {
           const tokenUsageService = createTokenUsageService();
-          const remaining = await tokenUsageService.getRemainingDailyTokensJst(interaction.user.id);
+          const { tokenDailyLimit } = await getConfig();
+          const remaining = await tokenUsageService.getRemainingDailyTokensJst(
+            interaction.user.id,
+            tokenDailyLimit
+          );
           if (remaining <= 0) {
             await interaction.reply({
-              content: `トークン上限（${process.env['TOKEN_DAILY_LIMIT'] ?? 10000} tokens）に達しちゃったよ。明日までまってね。`,
+              content: `トークン上限（${tokenDailyLimit} tokens）に達しちゃったよ。明日までまってね。`,
             });
             return;
           }
@@ -105,12 +110,14 @@ export function registerInteractionHandlers(client: BotClientLike): void {
       if (!isTalkThread(channel.id)) return;
 
       const tokenUsageService = createTokenUsageService();
-      const remaining = await tokenUsageService.getRemainingDailyTokensJst(message.author.id);
+      const { tokenDailyLimit } = await getConfig();
+      const remaining = await tokenUsageService.getRemainingDailyTokensJst(
+        message.author.id,
+        tokenDailyLimit
+      );
       if (remaining <= 0) {
         await channel.send({
-          content: `<@${message.author.id}> トークン上限（${
-            process.env['TOKEN_DAILY_LIMIT'] ?? 10000
-          } tokens）に達しちゃったよ。明日までまってね。`,
+          content: `<@${message.author.id}> トークン上限（${tokenDailyLimit} tokens）に達しちゃったよ。明日までまってね。`,
         });
         return;
       }
