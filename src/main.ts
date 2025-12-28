@@ -3,12 +3,14 @@ import { Events } from 'discord.js';
 import { getClient } from './discord/client';
 import { discoverCommands } from './discord/commands/index';
 import { registerInteractionHandlers } from './discord/events';
+import { validateLlmConfig } from './discord/llmConfig';
 import { getConfig } from './infrastructure/config';
 import { scheduleDailyTokenAggregation } from './service/tokenAggregation';
 
 async function main() {
   // Get secret key
   const config = await getConfig();
+  validateLlmConfig();
 
   // Create Bot Client
   const client = await getClient();
